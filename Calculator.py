@@ -1,53 +1,32 @@
-def add(x, y):
-    return x + y
+import streamlit as st
 
-def subtract(x, y):
-    return x - y
+# Title of the app
+st.title("Simple Calculator App")
 
-def multiply(x, y):
-    return x * y
+# Input fields for numbers
+num1 = st.number_input("Enter first number", value=0.0)
+num2 = st.number_input("Enter second number", value=0.0)
 
-def divide(x, y):
-    if y == 0:
-        return "Error! Division by zero."
-    return x / y
+# Radio buttons for selecting the operation
+operation = st.radio("Select an operation:", ("Add", "Subtract", "Multiply", "Divide"))
 
-def calculator():
-    print("Select operation:")
-    print("1. Add")
-    print("2. Subtract")
-    print("3. Multiply")
-    print("4. Divide")
-
-    while True:
-        choice = input("Enter choice (1/2/3/4): ")
-
-        if choice in ['1', '2', '3', '4']:
-            try:
-                num1 = float(input("Enter first number: "))
-                num2 = float(input("Enter second number: "))
-            except ValueError:
-                print("Invalid input! Please enter numeric values.")
-                continue
-
-            if choice == '1':
-                print(f"{num1} + {num2} = {add(num1, num2)}")
-
-            elif choice == '2':
-                print(f"{num1} - {num2} = {subtract(num1, num2)}")
-
-            elif choice == '3':
-                print(f"{num1} * {num2} = {multiply(num1, num2)}")
-
-            elif choice == '4':
-                print(f"{num1} / {num2} = {divide(num1, num2)}")
-
-            # Ask if the user wants to perform another calculation
-            next_calculation = input("Do you want to perform another calculation? (yes/no): ")
-            if next_calculation.lower() != 'yes':
-                break
+# Function to perform calculations
+def calculate(num1, num2, operation):
+    if operation == "Add":
+        return num1 + num2
+    elif operation == "Subtract":
+        return num1 - num2
+    elif operation == "Multiply":
+        return num1 * num2
+    elif operation == "Divide":
+        if num2 != 0:
+            return num1 / num2
         else:
-            print("Invalid choice! Please select a valid operation.")
+            st.warning("Division by zero is not allowed.")
+            return None
 
-if __name__ == "__main__":
-    calculator()
+# Button to calculate the result
+if st.button("Calculate"):
+    result = calculate(num1, num2, operation)
+    if result is not None:
+        st.success(f"The result is: {result}")
